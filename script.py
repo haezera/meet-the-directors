@@ -45,7 +45,7 @@ def scrape_when2meet(url, output_path, timeout_seconds=30):
             time_of_slot = driver.execute_script("return TimeOfSlot")
             
             if not people_names or len(people_names) == 0:
-                raise Exception("No participants found")
+                raise Exception(f"No participants found for {output_path}")
             
             # Build CSV
             result = ["Time," + ",".join(people_names)]
@@ -158,7 +158,6 @@ def find_possible_schedules(override: bool):
     media_path = f"./data/media.csv"
     if not os.path.exists(media_path) or override:
         try:
-            print(f"Scraping for media when2meet csv.")
             scrape_when2meet(maps["media"], media_path)
         except Exception as e:
             print("You bums didn't do your when2meets properly...")
@@ -177,7 +176,6 @@ def find_possible_schedules(override: bool):
         # if we haven't scraped the csv yet, then save (will take a bit).
         if not os.path.exists(data_path) or override:
             try:
-                print(f"Scraping for {port} when2meet csv.")
                 scrape_when2meet(maps[port], data_path)
             except Exception as e:
                 print(f"Processing when2meet for {port} has failed. Please manually check.")
